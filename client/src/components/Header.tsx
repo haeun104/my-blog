@@ -12,7 +12,10 @@ export default function Header() {
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
-        <span className="px-2 py-1">MY BLOG</span>
+        <span className="px-2 py-1 bg-gradient-to-r from-rose-400 via-rose-300 to-orange-200 rounded-full text-white">
+          MY
+        </span>{" "}
+        BLOG
       </Link>
       <form>
         <TextInput
@@ -30,7 +33,7 @@ export default function Header() {
           <FaMoon />
         </Button>
         <Link to="/sign-in">
-          <Button gradientDuoTone="pinkToOrange">
+          <Button outline gradientDuoTone="pinkToOrange">
             Sign In
           </Button>
         </Link>
