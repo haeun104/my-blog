@@ -10,9 +10,9 @@ export default function Header() {
     <Navbar className="border-b-2">
       <Link
         to="/"
-        className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
+        className="self-center whitespace-nowrap sm:text-xl font-semibold dark:text-white"
       >
-        <span className="px-2 py-1 bg-gradient-to-r from-rose-400 via-rose-300 to-orange-200 rounded-full text-white">
+        <span className="px-2 py-1 text-white rounded-md pinkToOrange-gradient">
           MY
         </span>{" "}
         BLOG
