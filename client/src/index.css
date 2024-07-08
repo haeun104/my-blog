@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+:root {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 @layer components {
   .pinkToOrange-gradient {
     @apply bg-gradient-to-br from-pink-500 to-orange-400 focus:ring-4 focus:ring-pink-200 enabled:hover:bg-gradient-to-bl dark:focus:ring-pink-800;
