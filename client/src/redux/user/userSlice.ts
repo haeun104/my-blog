@@ -8,7 +8,7 @@ interface User {
   updatedAt: Date;
 }
 
-interface UserState {
+export interface UserState {
   currentUser: null | User;
   error: null | string;
   loading: boolean;
