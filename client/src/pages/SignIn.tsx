@@ -1,15 +1,25 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, error: errorMessage } = useSelector(
+    (state: RootState) => state.user
+  );
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -18,10 +28,10 @@ export default function SignIn() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      return dispatch(signInFailure("Please fill out all fields."));
     }
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,14 +39,15 @@ export default function SignIn() {
       });
       const data = await response.json();
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        dispatch(signInFailure(data.message));
       }
-      setLoading(false);
-      navigate("/", { replace: true });
+      if (response.ok) {
+        dispatch(signInSuccess(data));
+        navigate("/", { replace: true });
+      }
     } catch (error) {
       //@ts-expect-error error type is any
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message));
     }
   };
   return (
