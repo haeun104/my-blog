@@ -6,6 +6,7 @@ interface User {
   email: string;
   createdAt: Date;
   updatedAt: Date;
+  profilePicture: string | undefined;
 }
 
 export interface UserState {
