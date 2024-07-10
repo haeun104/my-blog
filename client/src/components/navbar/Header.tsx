@@ -3,8 +3,8 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { RootState } from "../redux/store";
-import { toggleTheme } from "../redux/theme/themeSlice";
+import { RootState } from "../../redux/store";
+import { toggleTheme } from "../../redux/theme/themeSlice";
 
 export default function Header() {
   const path = useLocation().pathname;

@@ -5,7 +5,7 @@ import { persist, store } from "./redux/store.ts";
 import { Provider } from "react-redux";
 import React from "react";
 import { PersistGate } from "redux-persist/integration/react";
-import ThemeProvider from "./components/ThemeProvider.tsx";
+import ThemeProvider from "./components/navbar/ThemeProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <PersistGate persistor={persist}>
