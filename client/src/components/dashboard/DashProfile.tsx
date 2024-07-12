@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Avatar from "../../assets/avatar.jpg";
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { app } from "../../firebase/firebase-config";
 import {
@@ -14,13 +14,17 @@ import {
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {
+  deleteFailure,
+  deleteStart,
+  deleteSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
 } from "../../redux/user/userSlice";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const DashProfile = () => {
-  const { currentUser, loading } = useSelector(
+  const { currentUser, loading, error } = useSelector(
     (state: RootState) => state.user
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -35,6 +39,7 @@ const DashProfile = () => {
   const [formData, setFormData] = useState({});
   const [updateErrorMsg, setUpdateErrorMsg] = useState<string | null>(null);
   const [updateSuccessMsg, setUpdateSuccessMsg] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState(false);
 
   const filePickerRef = useRef<HTMLInputElement>(null);
 
@@ -135,92 +140,140 @@ const DashProfile = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    setOpenModal(false);
+    try {
+      dispatch(deleteStart());
+      const response = await fetch(`/api/user/delete/${currentUser?._id}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        dispatch(deleteFailure(data.message));
+      } else {
+        dispatch(deleteSuccess(data));
+      }
+    } catch (error) {
+      //@ts-expect-error error type is any
+      dispatch(deleteFailure(data.message));
+    }
+  };
+
   return (
-    <div className="w-full max-w-lg mx-auto p-3">
-      <h2 className="my-4 font-semibold text-lg text-center">Profile</h2>
-      <form
-        className="flex flex-col gap-4 items-center"
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="file"
-          onChange={handleImageChange}
-          ref={filePickerRef}
-          hidden
-        />
-        <div
-          className={`w-32 h-32 relative cursor-pointer`}
-          onClick={() => filePickerRef.current?.click()}
+    <>
+      <div className="w-full max-w-lg mx-auto p-3">
+        <h2 className="my-4 font-semibold text-lg text-center">Profile</h2>
+        <form
+          className="flex flex-col gap-4 items-center"
+          onSubmit={handleSubmit}
         >
-          {imageFileUploadProgress && (
-            <CircularProgressbar
-              value={imageFileUploadProgress}
-              text={`${imageFileUploadProgress} %`}
-              styles={{
-                root: {
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                },
-                path: {
-                  stroke: `rgba(62, 152, 199, ${
-                    imageFileUploadProgress / 100
-                  })`,
-                },
-              }}
-            />
-          )}
-          <img
-            src={imageFileUrl || currentUser?.profilePicture || Avatar}
-            alt="user photo"
-            className={`rounded-full w-full h-full border-8 border-gray-300 ${
-              imageLoading && "opacity-50"
-            }`}
+          <input
+            type="file"
+            onChange={handleImageChange}
+            ref={filePickerRef}
+            hidden
           />
+          <div
+            className={`w-32 h-32 relative cursor-pointer`}
+            onClick={() => filePickerRef.current?.click()}
+          >
+            {imageFileUploadProgress && (
+              <CircularProgressbar
+                value={imageFileUploadProgress}
+                text={`${imageFileUploadProgress} %`}
+                styles={{
+                  root: {
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                  },
+                  path: {
+                    stroke: `rgba(62, 152, 199, ${
+                      imageFileUploadProgress / 100
+                    })`,
+                  },
+                }}
+              />
+            )}
+            <img
+              src={imageFileUrl || currentUser?.profilePicture || Avatar}
+              alt="user photo"
+              className={`rounded-full w-full h-full border-8 border-gray-300 ${
+                imageLoading && "opacity-50"
+              }`}
+            />
+          </div>
+          {imageFileUploadError && (
+            <Alert color="failure">{imageFileUploadError}</Alert>
+          )}
+          <TextInput
+            type="text"
+            defaultValue={currentUser?.username}
+            id="username"
+            className="w-full"
+            onChange={handleChange}
+          />
+          <TextInput
+            type="email"
+            defaultValue={currentUser?.email}
+            id="email"
+            className="w-full"
+            onChange={handleChange}
+          />
+          <TextInput
+            type="password"
+            defaultValue="********"
+            id="password"
+            className="w-full"
+            onChange={handleChange}
+          />
+          <Button
+            type="submit"
+            gradientDuoTone="greenToBlue"
+            outline
+            className="w-full"
+            disabled={loading}
+          >
+            Update
+          </Button>
+        </form>
+        <div className="flex justify-between text-rose-400 text-sm font-semibold my-2">
+          <span className="cursor-pointer" onClick={() => setOpenModal(true)}>
+            Delete Account
+          </span>
+          <span className="cursor-pointer">Sign Out</span>
         </div>
-        {imageFileUploadError && (
-          <Alert color="failure">{imageFileUploadError}</Alert>
-        )}
-        <TextInput
-          type="text"
-          defaultValue={currentUser?.username}
-          id="username"
-          className="w-full"
-          onChange={handleChange}
-        />
-        <TextInput
-          type="email"
-          defaultValue={currentUser?.email}
-          id="email"
-          className="w-full"
-          onChange={handleChange}
-        />
-        <TextInput
-          type="password"
-          defaultValue="********"
-          id="password"
-          className="w-full"
-          onChange={handleChange}
-        />
-        <Button
-          type="submit"
-          gradientDuoTone="greenToBlue"
-          outline
-          className="w-full"
-          disabled={loading}
-        >
-          Update
-        </Button>
-      </form>
-      <div className="flex justify-between text-rose-400 text-sm font-semibold my-2">
-        <span className="cursor-pointer">Delete Account</span>
-        <span className="cursor-pointer">Sign Out</span>
+        {updateErrorMsg && <Alert color="failure">{updateErrorMsg}</Alert>}
+        {updateSuccessMsg && <Alert color="success">{updateSuccessMsg}</Alert>}
+        {error && <Alert color="success">{error}</Alert>}
       </div>
-      {updateErrorMsg && <Alert color="failure">{updateErrorMsg}</Alert>}
-      {updateSuccessMsg && <Alert color="success">{updateSuccessMsg}</Alert>}
-    </div>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this product?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeleteUser}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 
