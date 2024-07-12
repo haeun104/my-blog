@@ -48,7 +48,9 @@ export default function Header() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="user" rounded />}
+            label={
+              <Avatar alt="user" rounded img={currentUser.profilePicture} />
+            }
           >
             <Dropdown.Header>
               <span className="text-sm">{currentUser.username}</span>
