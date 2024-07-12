@@ -7,6 +7,7 @@ interface User {
   createdAt: Date;
   updatedAt: Date;
   profilePicture: string | undefined;
+  isAdmin: boolean;
 }
 
 export interface UserState {
