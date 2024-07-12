@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { toggleTheme } from "../../redux/theme/themeSlice";
+import { signoutSuccess } from "../../redux/user/userSlice";
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -12,6 +13,25 @@ export default function Header() {
   const { theme } = useSelector((state: RootState) => state.theme);
 
   const dispatch = useDispatch();
+
+  const handleSignout = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        //@ts-expect-error error type is any
+        console.log(response.message);
+      } else {
+        dispatch(signoutSuccess(data));
+      }
+    } catch (error) {
+      //@ts-expect-error error type is any
+      console.log(error.message);
+    }
+  };
 
   return (
     <Navbar className="border-b-2">
@@ -58,7 +78,7 @@ export default function Header() {
             <Link to={`/dashboard?tab=profile`}>
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
             <Dropdown.Divider />
           </Dropdown>
         ) : (

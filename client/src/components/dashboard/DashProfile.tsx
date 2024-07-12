@@ -17,6 +17,7 @@ import {
   deleteFailure,
   deleteStart,
   deleteSuccess,
+  signoutSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
@@ -159,6 +160,25 @@ const DashProfile = () => {
     }
   };
 
+  const handleSignout = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        //@ts-expect-error error type is any
+        console.log(response.message);
+      } else {
+        dispatch(signoutSuccess(data));
+      }
+    } catch (error) {
+      //@ts-expect-error error type is any
+      console.log(error.message);
+    }
+  };
+
   return (
     <>
       <div className="w-full max-w-lg mx-auto p-3">
@@ -243,7 +263,9 @@ const DashProfile = () => {
           <span className="cursor-pointer" onClick={() => setOpenModal(true)}>
             Delete Account
           </span>
-          <span className="cursor-pointer">Sign Out</span>
+          <span className="cursor-pointer" onClick={handleSignout}>
+            Sign Out
+          </span>
         </div>
         {updateErrorMsg && <Alert color="failure">{updateErrorMsg}</Alert>}
         {updateSuccessMsg && <Alert color="success">{updateSuccessMsg}</Alert>}
