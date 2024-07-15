@@ -23,6 +23,7 @@ import {
   updateSuccess,
 } from "../../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const DashProfile = () => {
   const { currentUser, loading, error } = useSelector(
@@ -258,6 +259,18 @@ const DashProfile = () => {
           >
             Update
           </Button>
+          {currentUser?.isAdmin && (
+            <Link to="/create-post" className="w-full">
+              <Button
+                type="button"
+                gradientDuoTone="pinkToOrange"
+                className="w-full"
+                disabled={loading}
+              >
+                Create a post
+              </Button>
+            </Link>
+          )}
         </form>
         <div className="flex justify-between text-rose-400 text-sm font-semibold my-2">
           <span className="cursor-pointer" onClick={() => setOpenModal(true)}>
