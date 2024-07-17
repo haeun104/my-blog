@@ -4,12 +4,15 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { Button, FileInput, Select, TextInput } from "flowbite-react";
-import { ChangeEvent, useState } from "react";
+import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { app } from "../firebase/firebase-config";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   "Select a category",
@@ -20,6 +23,14 @@ const categories = [
   "Hotel",
 ];
 
+const initialFormData = {
+  userId: "",
+  title: "",
+  content: "",
+  images: [],
+  category: "Select a category",
+};
+
 const CreatePost = () => {
   const [files, setFiles] = useState<File[] | null>(null);
   const [fileUploadProgress, setFileUploadProgress] = useState<number | null>(
@@ -28,6 +39,12 @@ const CreatePost = () => {
   const [fileOnUpload, setFileOnUpload] = useState<string | null>(null);
   const [filesUrl, setFilesUrl] = useState<string[] | null>(null);
   const [fileLoading, setFileLoading] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
+  const { currentUser } = useSelector((state: RootState) => state.user);
 
   const handleChangeImages = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -97,18 +114,69 @@ const CreatePost = () => {
     }
   };
 
+  const handleChangeData = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    e.preventDefault();
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    if (formData.category === "Select a category") {
+      setErrorMessage("Select a category");
+      return;
+    }
+    if (!formData.title) {
+      setErrorMessage("Title must be input");
+      return;
+    }
+    if (!formData.content) {
+      setErrorMessage("Content must be input");
+      return;
+    }
+    const newPost = { ...formData, userId: currentUser?._id, images: filesUrl };
+
+    try {
+      const response = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPost),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.message);
+      }
+
+      if (response.ok) {
+        setErrorMessage(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      //@ts-expect-error error type is any
+      setErrorMessage(error.message);
+    }
+  };
+
   return (
     <div className="h-screen px-3 py-5 max-w-3xl mx-auto">
       <h2 className="text-2xl font-semibold text-center mb-5">Create a post</h2>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
           <TextInput
             type="text"
             placeholder="Title"
             className="flex-1"
             required
+            name="title"
+            onChange={handleChangeData}
           />
-          <Select>
+          <Select onChange={handleChangeData} name="category">
             {categories.map((category, index) => (
               <option key={index} value={category}>
                 {category}
@@ -154,11 +222,18 @@ const CreatePost = () => {
           theme="snow"
           placeholder="Write something..."
           className="h-72 mb-16"
+          id="content"
+          onChange={(value) => setFormData({ ...formData, content: value })}
         />
         <Button type="submit" gradientDuoTone="pinkToOrange">
           Create
         </Button>
       </form>
+      {errorMessage && (
+        <Alert className="my-5" color="failure">
+          {errorMessage}
+        </Alert>
+      )}
     </div>
   );
 };
