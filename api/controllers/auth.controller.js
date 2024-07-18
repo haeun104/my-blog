@@ -58,9 +58,11 @@ export const signin = async (req, res, next) => {
 
     const { password: pass, ...rest } = validUser._doc; // to deliver data without password
 
+    const expiresDate = new Date(Date.now() + 48 * 60 * 60 * 1000); // cookie is valid for 2 days
+
     res
       .status(200)
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, { httpOnly: true, expires: expiresDate })
       .json(rest);
   } catch (error) {
     next(error);
