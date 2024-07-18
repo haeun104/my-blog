@@ -165,7 +165,9 @@ const CreatePost = () => {
 
   return (
     <div className="h-screen px-3 py-5 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-semibold text-center mb-5">Create a post</h2>
+      <h2 className="text-2xl font-semibold text-center mb-5 uppercase">
+        Create a post
+      </h2>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
           <TextInput
@@ -184,7 +186,7 @@ const CreatePost = () => {
             ))}
           </Select>
         </div>
-        <div className="flex justify-between border-teal-600 p-3 border-dotted border-2 gap-4">
+        <div className="flex justify-between items-center border-teal-600 p-3 border-dotted border-2 gap-4">
           <FileInput multiple onChange={handleChangeImages} />
           <Button
             type="button"
