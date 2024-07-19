@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineCloseSquare } from "react-icons/ai";
+import { Post } from "../types";
 
 const categories = [
   "Select a category",
@@ -23,18 +24,6 @@ const categories = [
   "Activity",
   "Hotel",
 ];
-
-interface Post {
-  _id: string;
-  userId: string;
-  title: string;
-  content: string;
-  images: string[];
-  category: string;
-  slug: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 const UpdatePost = () => {
   const [files, setFiles] = useState<File[] | null>(null);

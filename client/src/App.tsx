@@ -11,6 +11,7 @@ import DashboardPrivateRoute from "./components/dashboard/DashboardPrivateRoute"
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
+import PostDetail from "./pages/PostDetail";
 
 export default function App() {
   return (
@@ -26,9 +27,10 @@ export default function App() {
         </Route>
         <Route element={<AdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/update-post/:postId" element={<UpdatePost/>} />
+          <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>
         <Route path="/blog-posts" element={<BlogPosts />} />
+        <Route path="/post/:postSlug" element={<PostDetail />} />
       </Routes>
       <Footer />
     </BrowserRouter>

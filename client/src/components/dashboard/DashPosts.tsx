@@ -4,18 +4,7 @@ import { RootState } from "../../redux/store";
 import { Button, Modal, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-
-interface Post {
-  _id: string;
-  userId: string;
-  title: string;
-  content: string;
-  images: string[] | null | undefined;
-  category: string;
-  slug: string;
-  updatedAt: Date;
-  createdAt: Date;
-}
+import { Post } from "../../types";
 
 const DashPosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
