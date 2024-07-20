@@ -5,16 +5,7 @@ import Loader from "../Loader";
 import { Avatar, Button, Modal, Table } from "flowbite-react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-
-interface User {
-  _id: string;
-  username: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
-  profilePicture: string;
-  isAdmin: boolean;
-}
+import { User } from "../../types";
 
 const DashUsers = () => {
   const [users, setUsers] = useState<User[]>();

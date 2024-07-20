@@ -2,16 +2,44 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Alert, Avatar, Button, Textarea } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { Comment } from "../../types";
+import Loader from "../Loader";
+import CommentItem from "./CommentItem";
 
-interface CommentInputProps {
+interface CommentSectionProps {
   postId: string;
 }
 
-const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [comment, setComment] = useState<string>("");
   const [commentError, setCommentError] = useState<string | null>(null);
+  const [comments, setComments] = useState<Comment[]>();
+  const [commentLoading, setCommentLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      setCommentLoading(true);
+      try {
+        const response = await fetch(`/api/comment/getComments/${postId}`);
+        const data = await response.json();
+        if (!response.ok) {
+          console.log(data.message);
+          setCommentLoading(false);
+          return;
+        } else {
+          setComments(data);
+          setCommentLoading(false);
+        }
+      } catch (error) {
+        //@ts-expect-error error type is any
+        console.log(error.message);
+        setCommentLoading(false);
+      }
+    };
+    fetchComments();
+  }, [postId]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,8 +130,29 @@ const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
           )}
         </form>
       )}
+      {commentLoading ? (
+        <Loader />
+      ) : (
+        <div className="my-5">
+          {comments && comments.length > 0 ? (
+            <>
+              <div className="flex gap-2 items-center mb-5">
+                <p className="text-sm">Comments</p>
+                <span className="border-2 py-1 px-2 text-xs rounded-md font-semibold border-gray-300">
+                  {comments.length}
+                </span>
+              </div>
+              {comments.map((comment) => (
+                <CommentItem comment={comment} key={comment._id} />
+              ))}
+            </>
+          ) : (
+            <p className="text-center text-sm">There are no comments yet</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
-export default CommentInput;
+export default CommentSection;
