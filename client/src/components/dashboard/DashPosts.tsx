@@ -112,9 +112,11 @@ const DashPosts = () => {
                         <span>No image</span>
                       )}
                     </Table.Cell>
-                    <Table.Cell className="font-semibold">
-                      {post.title}
+
+                    <Table.Cell className="font-semibold hover:underline">
+                      <Link to={`/post/${post.slug}`}>{post.title}</Link>
                     </Table.Cell>
+
                     <Table.Cell>{post.category}</Table.Cell>
                     <Table.Cell>
                       <span
