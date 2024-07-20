@@ -43,7 +43,15 @@ const PostDetail = () => {
           {post.category}
         </Button>
       </Link>
-      <div className="grid grid-cols-1 lg:grid-cols-2 mx-auto gap-4 mt-5 max-w-4xl">
+      <div
+        className={`grid grid-cols-1 ${
+          post.images && post.images.length > 1 && "lg:grid-cols-2"
+        } mx-auto gap-4 mt-5 max-w-4xl} ${
+          post.images &&
+          post.images.length % 2 === 1 &&
+          "lg:[&>:last-child]:col-span-2"
+        }`}
+      >
         {post.images && (
           <>
             {post.images.map((image, index) => (
@@ -51,7 +59,7 @@ const PostDetail = () => {
                 key={index}
                 src={image}
                 alt={`${post.slug} - photo${index + 1}`}
-                className="max-h-[600px]"
+                className="max-h-[600px] mx-auto"
               />
             ))}
           </>
