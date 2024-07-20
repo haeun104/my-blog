@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Post } from "../types";
 import { Button } from "flowbite-react";
+import CommentInput from "../components/comments/CommentInput";
 
 const PostDetail = () => {
   const { postSlug } = useParams();
@@ -73,6 +74,7 @@ const PostDetail = () => {
         className="max-w-4xl mx-auto my-5 post-content"
         dangerouslySetInnerHTML={{ __html: post.content }}
       ></div>
+      <CommentInput />
     </div>
   );
 };
