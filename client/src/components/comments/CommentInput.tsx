@@ -1,12 +1,54 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { Avatar, Button, Textarea } from "flowbite-react";
+import { Alert, Avatar, Button, Textarea } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
-const CommentInput = () => {
+interface CommentInputProps {
+  postId: string;
+}
+
+const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [comment, setComment] = useState<string>("");
+  const [commentError, setCommentError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setCommentError(null);
+
+    if (!comment || comment.length < 3) {
+      setCommentError("Comment must contain at least 3 characters");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/comment/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId,
+          content: comment,
+          userId: currentUser?._id,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setCommentError(data.message);
+        return;
+      }
+
+      if (response.ok) {
+        console.log("Successfully created a comment");
+      }
+    } catch (error) {
+      //@ts-expect-error error type is any
+      setCommentError(error.message);
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto w-full">
@@ -30,7 +72,10 @@ const CommentInput = () => {
         </div>
       )}
       {currentUser && (
-        <form className="mt-5 border-2 p-3 rounded-md border-neutral-300">
+        <form
+          className="mt-5 border-2 p-3 rounded-md border-neutral-300"
+          onSubmit={handleSubmit}
+        >
           <Textarea
             rows={3}
             maxLength={200}
@@ -50,6 +95,11 @@ const CommentInput = () => {
               Submit
             </Button>
           </div>
+          {commentError && (
+            <Alert color="failure" className="mt-5">
+              {commentError}
+            </Alert>
+          )}
         </form>
       )}
     </div>

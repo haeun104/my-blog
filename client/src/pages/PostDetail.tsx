@@ -74,7 +74,7 @@ const PostDetail = () => {
         className="max-w-4xl mx-auto my-5 post-content"
         dangerouslySetInnerHTML={{ __html: post.content }}
       ></div>
-      <CommentInput />
+      <CommentInput postId={post._id} />
     </div>
   );
 };
