@@ -2,6 +2,7 @@ import express from "express";
 import { verifyUser } from "../utils/verifyUser.js";
 import {
   createComment,
+  deleteComment,
   editComment,
   getComments,
   likeComment,
@@ -11,7 +12,8 @@ const router = express.Router();
 
 router.post("/create", verifyUser, createComment);
 router.get("/getComments/:postId", getComments);
-router.put("/likeComment/:commentId", verifyUser, likeComment)
-router.put("/editComment/:commentId", verifyUser, editComment)
+router.put("/likeComment/:commentId", verifyUser, likeComment);
+router.put("/editComment/:commentId", verifyUser, editComment);
+router.delete("/deleteComment/:commentId", verifyUser, deleteComment);
 
 export default router;

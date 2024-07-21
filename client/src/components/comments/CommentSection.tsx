@@ -18,6 +18,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
   const [comments, setComments] = useState<Comment[]>();
   const [commentLoading, setCommentLoading] = useState(true);
 
+// Fetch all comments when mounted
   useEffect(() => {
     const fetchComments = async () => {
       setCommentLoading(true);
@@ -41,6 +42,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     fetchComments();
   }, [postId]);
 
+  // Create a new comment
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCommentError(null);
@@ -109,6 +111,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     setComments(commentsAfterEdit);
   };
 
+  const deleteComment = (deletedCommentId: string) => {
+    const commentsAfterDeletion = comments?.filter(
+      (comment) => comment._id !== deletedCommentId
+    );
+    setComments(commentsAfterDeletion);
+  };
+
   return (
     <div className="max-w-2xl mx-auto w-full">
       {currentUser ? (
@@ -140,6 +149,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             maxLength={200}
             placeholder="Add a comment..."
             onChange={(e) => setComment(e.target.value)}
+            value={comment}
           />
           <div className="flex justify-between items-center mt-2">
             <span className="text-sm">
@@ -179,6 +189,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                   key={comment._id}
                   onLike={handleOnLike}
                   onEdit={updateEditedComment}
+                  onDelete={deleteComment}
                 />
               ))}
             </>
