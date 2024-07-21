@@ -16,7 +16,7 @@ export interface Comment {
   postingId: string;
   content: string;
   likes: string[] | undefined;
-  numOfLikes: number | undefined;
+  numOfLikes: number;
   createdAt: Date;
   updatedAt: Date;
 }

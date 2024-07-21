@@ -70,11 +70,34 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
       }
 
       if (response.ok) {
-        console.log("Successfully created a comment");
+        setComment("");
+        setCommentError(null);
+        setComments(comments ? [data, ...comments] : [data]);
       }
     } catch (error) {
       //@ts-expect-error error type is any
       setCommentError(error.message);
+    }
+  };
+
+  //Like or unlike a comment
+  const handleOnLike = async (commentId: string) => {
+    try {
+      const response = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const updatedComments = comments?.map((comment) =>
+          comment._id === commentId
+            ? { ...comment, likes: data.likes, numOfLikes: data.numOfLikes }
+            : comment
+        );
+        setComments(updatedComments);
+      }
+    } catch (error) {
+      //@ts-expect-error error type is any
+      console.log(error.message);
     }
   };
 
@@ -143,7 +166,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 </span>
               </div>
               {comments.map((comment) => (
-                <CommentItem comment={comment} key={comment._id} />
+                <CommentItem
+                  comment={comment}
+                  key={comment._id}
+                  onLike={handleOnLike}
+                />
               ))}
             </>
           ) : (
