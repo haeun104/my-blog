@@ -101,6 +101,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     }
   };
 
+  // Update a comment after edit
+  const updateEditedComment = (editedComment: Comment) => {
+    const commentsAfterEdit = comments?.map((comment) =>
+      comment._id === editedComment._id ? editedComment : comment
+    );
+    setComments(commentsAfterEdit);
+  };
+
   return (
     <div className="max-w-2xl mx-auto w-full">
       {currentUser ? (
@@ -156,12 +164,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
       {commentLoading ? (
         <Loader />
       ) : (
-        <div className="my-5">
+        <div className="my-4">
           {comments && comments.length > 0 ? (
             <>
-              <div className="flex gap-2 items-center mb-5">
+              <div className="flex gap-2 items-center mb-2">
                 <p className="text-sm">Comments</p>
-                <span className="border-2 py-1 px-2 text-xs rounded-md font-semibold border-gray-300">
+                <span className="border-2 px-2 text-xs rounded-md font-semibold border-gray-300">
                   {comments.length}
                 </span>
               </div>
@@ -170,6 +178,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                   comment={comment}
                   key={comment._id}
                   onLike={handleOnLike}
+                  onEdit={updateEditedComment}
                 />
               ))}
             </>
