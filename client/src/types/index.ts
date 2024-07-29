@@ -13,7 +13,7 @@ export interface Post {
 export interface Comment {
   _id: string;
   userId: string;
-  postingId: string;
+  postId: string;
   content: string;
   likes: string[] | undefined;
   numOfLikes: number;

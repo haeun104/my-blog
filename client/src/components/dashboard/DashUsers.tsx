@@ -9,9 +9,9 @@ import { User } from "../../types";
 
 const DashUsers = () => {
   const [users, setUsers] = useState<User[]>();
-  const [showMore, setShowMore] = useState(true);
+  const [showMore, setShowMore] = useState<boolean>();
   const [openModal, setOpenModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<string>();
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
 
   const { currentUser } = useSelector((state: RootState) => state.user);
 
@@ -27,13 +27,17 @@ const DashUsers = () => {
         }
 
         if (response.ok) {
-          if (data.users.length <= 9) {
+          if (data.users.length < 9 || data.usersTotal === 10) {
             setShowMore(false);
+          } else {
+            setShowMore(true);
           }
+
           setUsers(data.users);
         }
       } catch (error) {
-        console.log(error);
+        //@ts-expect-error error type is any
+        console.error(error.message);
       }
     };
     fetchUsers();
