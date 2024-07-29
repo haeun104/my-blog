@@ -5,6 +5,7 @@ import DashProfile from "../components/dashboard/DashProfile";
 import DashPosts from "../components/dashboard/DashPosts";
 import DashUsers from "../components/dashboard/DashUsers";
 import DashComments from "../components/dashboard/DashComments";
+import DashboardOverview from "../components/dashboard/DashboardOverview";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -21,7 +22,7 @@ export default function Dashboard() {
   }, [location]);
 
   return (
-    <div className="h-screen flex flex-col md:flex-row">
+    <div className="h-full flex flex-col md:flex-row">
       <div className="md:w-56">
         <DashSidebar />
       </div>
@@ -29,6 +30,7 @@ export default function Dashboard() {
       {tab === "posts" && <DashPosts />}
       {tab === "users" && <DashUsers />}
       {tab === "comments" && <DashComments />}
+      {tab === "dash" && <DashboardOverview />}
     </div>
   );
 }
