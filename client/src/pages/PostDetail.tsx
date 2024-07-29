@@ -4,12 +4,11 @@ import Loader from "../components/Loader";
 import { Post } from "../types";
 import { Button } from "flowbite-react";
 import CommentSection from "../components/comments/CommentSection";
-import PostCard from "../components/posts/PostCart";
+import RecentPosts from "../components/posts/RecentPosts";
 
 const PostDetail = () => {
   const { postSlug } = useParams();
   const [post, setPost] = useState<Post>();
-  const [recentPosts, setRecentPosts] = useState<Post[]>();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -28,23 +27,6 @@ const PostDetail = () => {
     };
     fetchPost();
   }, [postSlug]);
-
-  //Fetch 3 recent posts
-  useEffect(() => {
-    const fetchRecentPosts = async () => {
-      try {
-        const response = await fetch(`/api/post/getPosts?limit=3`);
-        const data = await response.json();
-        if (response.ok) {
-          setRecentPosts(data.posts);
-        }
-      } catch (error) {
-        //@ts-expect-error error type is any
-        console.log(error.message);
-      }
-    };
-    fetchRecentPosts();
-  }, []);
 
   if (!post) {
     return <Loader />;
@@ -94,20 +76,7 @@ const PostDetail = () => {
         dangerouslySetInnerHTML={{ __html: post.content }}
       ></div>
       <CommentSection postId={post._id} />
-      <div className="my-5">
-        <h3 className="text-center font-semibold text-2xl mb-5">
-          Recent Posts
-        </h3>
-        {!recentPosts || recentPosts.length === 0 ? (
-          <p className="text-center">There are no posts yet</p>
-        ) : (
-          <div className="flex flex-wrap gap-6 justify-center">
-            {recentPosts.map((post) => (
-              <PostCard key={post._id} post={post} />
-            ))}
-          </div>
-        )}
-      </div>
+      <RecentPosts />
     </div>
   );
 };
