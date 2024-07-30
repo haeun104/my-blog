@@ -7,7 +7,7 @@ const FooterComp = () => {
     <Footer container className="border border-t-8 border-gray-200">
       <div className="w-full">
         <div className="w-full lg:flex justify-between mx-auto max-w-7xl">
-          <div className="py-4">
+          <div className="py-2">
             <Link
               to="/"
               className="whitespace-nowrap font-semibold dark:text-white text-lg sm:text-xl"
@@ -18,7 +18,7 @@ const FooterComp = () => {
               BLOG
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:gap-8 mt-4 pb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:gap-8 mt-2 pb-2">
             <div>
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
@@ -75,7 +75,7 @@ const FooterComp = () => {
             by="My blog"
             year={new Date().getFullYear()}
           />
-          <div className="flex gap-4 mt-2 sm:mt-0 sm:justify-center">
+          <div className="flex gap-4 mt-1 sm:mt-0 sm:justify-center">
             <Footer.Icon href="#" icon={BsFacebook} />
             <Footer.Icon href="#" icon={BsTwitterX} />
             <Footer.Icon href="#" icon={BsInstagram} />

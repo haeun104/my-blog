@@ -23,8 +23,8 @@ const RecentPosts = () => {
   }, []);
 
   return (
-    <div className="my-5">
-      <h3 className="text-center font-semibold text-2xl mb-5">Recent Posts</h3>
+    <div className="p-5">
+      <h3 className="text-center font-semibold text-xl mb-5">Recent Posts</h3>
       {!recentPosts || recentPosts.length === 0 ? (
         <p className="text-center">There are no posts yet</p>
       ) : (
