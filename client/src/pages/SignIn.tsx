@@ -8,7 +8,6 @@ import {
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -52,7 +51,7 @@ export default function SignIn() {
     }
   };
   return (
-    <div className="h-full mt-20">
+    <div className="h-full py-24 bg-[#CDE8E5] dark:bg-teal-600">
       <div className="flex flex-col sm:flex-row gap-6 max-w-3xl mx-4 md:mx-auto">
         {/* left */}
         <div className="flex-1 flex flex-col gap-4">
@@ -68,8 +67,8 @@ export default function SignIn() {
             </Link>
           </div>
           <div className="flex flex-col gap-2 mt-6">
-            <span className="text-xl">Welcome Back to My Blog.</span>
-            <p>You can sign in with your email and password or with Google.</p>
+            <span className="text-2xl">Welcome back!</span>
+            <p>Enter your email and password to sign in.</p>
           </div>
         </div>
         {/* right */}
@@ -107,11 +106,13 @@ export default function SignIn() {
                 "Sign In"
               )}
             </Button>
-            <OAuth />
           </form>
           <div className="flex gap-2 my-5 text-sm">
             <span>Don't have an account?</span>
-            <Link to="/sign-up" className="text-blue-700 hover:underline">
+            <Link
+              to="/sign-up"
+              className="text-blue-700 hover:underline dark:text-rose-500"
+            >
               Sign up
             </Link>
           </div>

@@ -67,7 +67,7 @@ export default function BlogPosts() {
     setFilterValues(updatedFilterValues);
 
     fetchPosts(urlParams.toString());
-  }, [location.search, filterValues]);
+  }, [location.search]);
 
 
   const handleChange = (

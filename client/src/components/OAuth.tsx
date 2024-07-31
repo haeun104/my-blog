@@ -7,7 +7,6 @@ const OAuth = () => {
     <Button
       type="button"
       gradientDuoTone="greenToBlue"
-      outline
       onClick={handleClickGoogle}
     >
       <AiFillGoogleCircle className="w-6 h-6 mr-2" />
