@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 
-const categories = [
+export const categories = [
   "Select a category",
   "Culture",
   "Food",

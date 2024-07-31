@@ -1,11 +1,11 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
-import { AiOutlineSearch } from "react-icons/ai";
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { toggleTheme } from "../../redux/theme/themeSlice";
 import { signoutSuccess } from "../../redux/user/userSlice";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -44,17 +44,7 @@ export default function Header() {
         </span>{" "}
         BLOG
       </Link>
-      <form>
-        <TextInput
-          type="text"
-          placeholder="Search..."
-          rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
-        />
-      </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
-        <AiOutlineSearch size={18} />
-      </Button>
+      <SearchBar />
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-12 h-10 hidden sm:inline"
