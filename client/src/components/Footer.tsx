@@ -22,8 +22,8 @@ const FooterComp = () => {
             <div>
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
-                <Footer.Link href="/about">Introduction</Footer.Link>
-                <Footer.Link href="/about">Contact</Footer.Link>
+                <Footer.Link href="#">Introduction</Footer.Link>
+                <Footer.Link href="#">Contact</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>

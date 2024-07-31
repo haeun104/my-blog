@@ -65,6 +65,11 @@ export default function Header() {
             <Dropdown.Header>
               <span className="text-sm">{currentUser.username}</span>
             </Dropdown.Header>
+            {currentUser.isAdmin && (
+              <Link to={`/dashboard?tab=dash`}>
+                <Dropdown.Item>Dashboard</Dropdown.Item>
+              </Link>
+            )}
             <Link to={`/dashboard?tab=profile`}>
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
