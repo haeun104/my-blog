@@ -31,6 +31,14 @@ const initialFormData = {
   category: "Select a category",
 };
 
+interface NewPost {
+  userId: string | undefined;
+  title: string;
+  content: string;
+  images?: string[];
+  category: string;
+}
+
 const CreatePost = () => {
   const [files, setFiles] = useState<File[] | null>(null);
   const [fileUploadProgress, setFileUploadProgress] = useState<number | null>(
@@ -136,7 +144,16 @@ const CreatePost = () => {
       setErrorMessage("Content must be input");
       return;
     }
-    const newPost = { ...formData, userId: currentUser?._id, images: filesUrl };
+
+    const newPost: NewPost = {
+      userId: currentUser?._id,
+      title: formData.title,
+      content: formData.content,
+      category: formData.category,
+    };
+    if (filesUrl && filesUrl.length > 0) {
+      newPost.images = filesUrl;
+    }
 
     try {
       const response = await fetch("/api/post/create", {

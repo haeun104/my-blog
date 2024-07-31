@@ -67,8 +67,8 @@ export default function BlogPosts() {
     setFilterValues(updatedFilterValues);
 
     fetchPosts(urlParams.toString());
-  }, [location.search]);
-  
+  }, [location.search, filterValues]);
+
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
