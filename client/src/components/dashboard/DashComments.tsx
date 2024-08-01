@@ -25,7 +25,7 @@ const DashComments = () => {
           return;
         }
         if (response.ok) {
-          if (data.comments.length < 9 || data.commentsTotal === 10) {
+          if (data.comments.length < 10 || data.commentsTotal === 10) {
             setShowMore(false);
           } else {
             setShowMore(true);
@@ -53,7 +53,7 @@ const DashComments = () => {
         return;
       }
       if (response.ok) {
-        if (data.comments.length < 9) {
+        if (data.comments.length < 10) {
           setShowMore(false);
         }
         if (comments) {
@@ -105,7 +105,7 @@ const DashComments = () => {
         {currentUser?.isAdmin && comments && comments.length > 0 ? (
           <>
             <Table className="shadow-md">
-              <Table.Head>
+              <Table.Head className="border-b">
                 <Table.HeadCell>Update date</Table.HeadCell>
                 <Table.HeadCell>Comment content</Table.HeadCell>
                 <Table.HeadCell>Number of likes</Table.HeadCell>
@@ -115,7 +115,10 @@ const DashComments = () => {
               </Table.Head>
               <Table.Body>
                 {comments.map((comment) => (
-                  <Table.Row>
+                  <Table.Row
+                    key={comment._id}
+                    className="border-b bg-white dark:border-gray-700 dark:bg-gray-800"
+                  >
                     <Table.Cell>
                       {new Date(comment.updatedAt).toLocaleDateString()}
                     </Table.Cell>

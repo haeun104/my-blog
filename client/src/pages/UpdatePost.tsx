@@ -63,7 +63,7 @@ const UpdatePost = () => {
   }, [postId]);
 
   useEffect(() => {
-    if (formData) {
+    if (formData && formData.images) {
       setFilesUrl(formData.images);
     }
   }, [formData]);
@@ -208,9 +208,10 @@ const UpdatePost = () => {
   if (!formData) {
     return <div>Loading...</div>;
   }
+
   if (formData && filesUrl) {
     return (
-      <div className="h-screen px-3 py-5 max-w-3xl mx-auto">
+      <div className="flex-1 px-3 py-5 max-w-3xl mx-auto">
         <h2 className="text-2xl font-semibold text-center mb-5 uppercase">
           Update post
         </h2>

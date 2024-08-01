@@ -27,7 +27,7 @@ const DashUsers = () => {
         }
 
         if (response.ok) {
-          if (data.users.length < 9 || data.usersTotal === 10) {
+          if (data.users.length < 10 || data.usersTotal === 10) {
             setShowMore(false);
           } else {
             setShowMore(true);
@@ -56,7 +56,7 @@ const DashUsers = () => {
       }
 
       if (response.ok) {
-        if (data.users.length < 9) {
+        if (data.users.length < 10) {
           setShowMore(false);
         }
         if (users) {

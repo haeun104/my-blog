@@ -130,6 +130,7 @@ const DashProfile = () => {
 
       if (!response.ok) {
         setUpdateErrorMsg(data.message);
+        dispatch(updateFailure(data.message))
       } else {
         setUpdateSuccessMsg("Updated user's profile successfully");
         dispatch(updateSuccess(data));

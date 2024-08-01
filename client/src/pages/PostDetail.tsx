@@ -38,7 +38,7 @@ const PostDetail = () => {
         {post.title}
       </h1>
       <Link
-        to={`/search?category=${post.category}`}
+        to={`/blog-posts?category=${post.category}`}
         className="self-center mt-5"
       >
         <Button pill color="gray" size="sm">
@@ -67,7 +67,7 @@ const PostDetail = () => {
           </>
         )}
       </div>
-      <div className="text-sm flex justify-between py-3 border-b max-w-4xl mx-auto w-full">
+      <div className="text-sm flex justify-between py-3 border-b max-w-4xl mx-auto w-full mt-4">
         <span>{new Date(post.createdAt).toLocaleDateString()}</span>
         <span>{(post.content.length / 1000).toFixed(0)} mins read</span>
       </div>
