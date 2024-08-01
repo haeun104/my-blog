@@ -69,7 +69,6 @@ export default function BlogPosts() {
     fetchPosts(urlParams.toString());
   }, [location.search]);
 
-
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -141,7 +140,8 @@ export default function BlogPosts() {
   }
 
   return (
-    <div className="p-3 lg:p-0 lg:flex">
+    <div className="flex-1 p-3 lg:p-0 lg:flex">
+      {/* sidebar for filter */}
       <form
         className="text-md flex flex-col gap-4 max-w-80 w-full mx-auto lg:max-w-96 lg:p-5 lg:border-r lg:border-gray-300"
         onSubmit={handleSearchSubmit}

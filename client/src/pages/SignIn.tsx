@@ -51,7 +51,7 @@ export default function SignIn() {
     }
   };
   return (
-    <div className="h-full py-24 bg-[#CDE8E5] dark:bg-teal-600">
+    <div className="flex-1 py-24 bg-[#CDE8E5] dark:bg-teal-600">
       <div className="flex flex-col sm:flex-row gap-6 max-w-3xl mx-4 md:mx-auto">
         {/* left */}
         <div className="flex-1 flex flex-col gap-4">
