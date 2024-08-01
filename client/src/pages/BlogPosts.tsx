@@ -5,13 +5,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Post } from "../types";
 import Loader from "../components/Loader";
 import PostCard from "../components/posts/PostCard";
+import { GrPowerReset } from "react-icons/gr";
+
+const initialFilterValues = {
+  searchTerm: "",
+  sort: "desc",
+  category: "Select a category",
+};
 
 export default function BlogPosts() {
-  const [filterValues, setFilterValues] = useState({
-    searchTerm: "",
-    sort: "desc",
-    category: "Select a category",
-  });
+  const [filterValues, setFilterValues] = useState(initialFilterValues);
   const [posts, setPosts] = useState<Post[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [showMore, setShowMore] = useState(true);
@@ -186,14 +189,33 @@ export default function BlogPosts() {
           Search
         </Button>
       </form>
+      {/* Posts list */}
       <div className="mt-5 border-t border-gray-300 w-full lg:border-none lg:mt-2 pb-5">
         <h2 className="my-3 text-xl font-bold text-center lg:text-3xl">
           Posts
         </h2>
         <div className="p-7 flex gap-4 flex-wrap justify-center">
-          {posts?.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))}
+          {posts?.length === 0 ? (
+            <div className="flex flex-col gap-4 items-center">
+              <p>There are no posts</p>
+              <div
+                className="flex flex-col items-center text-teal-500 cursor-pointer"
+                onClick={() => {
+                  navigate("/blog-posts");
+                  setFilterValues(initialFilterValues);
+                }}
+              >
+                <GrPowerReset />
+                <span className="text-sm">reset filter</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              {posts?.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </>
+          )}
         </div>
         {showMore && (
           <div className="w-full flex justify-center">
