@@ -7,6 +7,7 @@ import authRoute from "./routes/auth.route.js";
 import postRoute from "./routes/post.route.js";
 import commentRoute from "./routes/comment.route.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 // enable to import data from env file
 dotenv.config();
@@ -20,6 +21,8 @@ mongoose
     console.log(err);
   });
 
+const __dirname = path.resolve();
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +34,12 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // Middleware handling an error
 app.use((err, req, res, next) => {
