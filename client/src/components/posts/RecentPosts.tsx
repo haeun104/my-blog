@@ -28,7 +28,7 @@ const RecentPosts = () => {
       {!recentPosts || recentPosts.length === 0 ? (
         <p className="text-center">There are no posts yet</p>
       ) : (
-        <div className="flex flex-wrap gap-6 justify-center">
+        <div className="flex flex-wrap xl:flex-nowrap gap-6 justify-center">
           {recentPosts.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}

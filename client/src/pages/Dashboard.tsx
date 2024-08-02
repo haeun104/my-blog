@@ -22,7 +22,7 @@ export default function Dashboard() {
   }, [location]);
 
   return (
-    <div className="h-full flex flex-col md:flex-row">
+    <div className="flex-1 flex flex-col md:flex-row">
       <div className="md:w-56">
         <DashSidebar />
       </div>
